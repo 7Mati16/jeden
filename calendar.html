@@ -3,110 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminarz Szkolny 2026</title>
+    <title>Nauka.io | Terminarz v2.7</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .calendar-grid { grid-template-columns: repeat(7, 1fr); }
+        .day-cell { min-height: clamp(100px, 15vh, 140px); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen pb-10">
+<body class="bg-slate-50 text-slate-900 antialiased pb-10">
 
-    <div class="max-w-7xl mx-auto px-4 py-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
-            <div class="flex items-center gap-4">
-                <h1 id="month-display" class="text-3xl font-bold tracking-tight min-w-[200px]">Marzec 2026</h1>
+    <div class="max-w-[1600px] mx-auto px-6 py-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6 gap-4">
+            <div class="flex items-center gap-6">
+                <h1 id="month-display" class="text-3xl font-extrabold tracking-tighter text-slate-900 min-w-[250px]">Marzec 2026</h1>
                 <div class="flex bg-white rounded-xl shadow-sm border border-slate-200 p-1">
-                    <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                    <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-50 rounded-lg transition-all text-slate-600">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                     </button>
-                    <button onclick="changeMonth(1)" class="p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                    <button onclick="changeMonth(1)" class="p-2 hover:bg-slate-50 rounded-lg transition-all text-slate-600">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                     </button>
                 </div>
             </div>
-            
-            <button onclick="openModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-indigo-100 flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                Dodaj sprawdzian
-            </button>
-        </div>
 
-        <div class="grid calendar-grid gap-2 mb-2 text-center text-xs font-bold text-slate-400 uppercase tracking-widest">
-            <div>Pon</div><div>Wt</div><div>Śr</div><div>Czw</div><div>Pt</div><div>Sob</div><div>Ndz</div>
-        </div>
-
-        <div id="calendar-grid" class="grid calendar-grid gap-2">
+            <div class="flex flex-wrap gap-3">
+                <button onclick="exportToCode()" class="bg-white border-2 border-indigo-100 text-indigo-600 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-50 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Generuj JSON do Kodu
+                </button>
+                <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-indigo-200 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Dodaj wydarzenie
+                </button>
             </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200 overflow-hidden">
+            <div class="grid calendar-grid bg-slate-50 border-b border-slate-200">
+                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Poniedziałek</div>
+                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Wtorek</div>
+                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Środa</div>
+                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Czwartek</div>
+                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Piątek</div>
+                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest text-indigo-300">Sobota</div>
+                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest text-indigo-300">Niedziela</div>
+            </div>
+            <div id="calendar-grid" class="grid calendar-grid"></div>
+        </div>
     </div>
 
-    <div id="modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-                <h3 class="text-xl font-bold">Nowy sprawdzian</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+    <div id="modal-add" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden border border-white/20">
+            <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="text-2xl font-extrabold text-slate-800">Nowy termin</h3>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-slate-900 text-3xl transition-colors">&times;</button>
             </div>
-            <form id="exam-form" class="p-6 space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-600">Przedmiot</label>
-                    <input type="text" id="subject" required class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="np. Biologia">
+            <form id="event-form" class="p-8 space-y-5">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Typ wydarzenia</label>
+                        <select id="type" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all cursor-pointer">
+                            <option value="spr">🔴 Sprawdzian</option>
+                            <option value="kart">🟡 Kartkówka</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Data</label>
+                        <input type="date" id="date" required class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-600">Data</label>
-                    <input type="date" id="date" required class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Przedmiot (z Twojej bazy)</label>
+                    <select id="subject-select" required class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all">
+                        </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-1 text-slate-600">Zakres materiału</label>
-                    <textarea id="topic" rows="3" class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Rozdział 4..."></textarea>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Krótki temat (na kalendarzu)</label>
+                    <input type="text" id="topic-short" required placeholder="np. Budowa DNA" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all">
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition-shadow shadow-lg shadow-indigo-200">Zapisz termin</button>
+                <div>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Pełny zakres materiału</label>
+                    <textarea id="topic-full" rows="3" placeholder="Wypisz co trzeba umieć..." class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-medium focus:border-indigo-500 outline-none transition-all"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-0.5 transition-all">Dodaj do terminarza</button>
             </form>
         </div>
     </div>
 
-    <script>
-        let currentViewDate = new Date(); // Przechowuje aktualnie wyświetlany miesiąc
-        let exams = JSON.parse(localStorage.getItem('exams')) || [];
+    <div id="modal-view" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-sm overflow-hidden border border-white/20">
+            <div id="view-header" class="p-8 text-white relative">
+                <button onclick="closeModals()" class="absolute top-6 right-6 text-white/80 hover:text-white text-2xl">&times;</button>
+                <p id="view-type-label" class="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-80"></p>
+                <h3 id="view-subject" class="text-3xl font-extrabold leading-none"></h3>
+            </div>
+            <div class="p-8 space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Temat lekcji</label>
+                    <p id="view-topic-short" class="text-slate-900 font-bold text-lg"></p>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Zakres materiału</label>
+                    <div id="view-topic-full" class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto pr-2"></div>
+                </div>
+                <div class="pt-2 flex gap-3">
+                    <button id="delete-btn" class="flex-1 bg-red-50 text-red-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-red-100 transition-all">Usuń wpis</button>
+                    <button onclick="closeModals()" class="flex-[2] bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function renderCalendar() {
+    <script>
+        // ==========================================
+        // 1. HARDKODOWANE DANE (TUTAJ WKLEJAJ WYGENEROWANY JSON)
+        // ==========================================
+        const defaultData = []; 
+
+        const CAL_KEY = 'nauka_v27_calendar';
+        const DB_KEY = 'nauka_v27_db';
+
+        let currentViewDate = new Date();
+        let events = [];
+
+        // Inicjalizacja danych
+        function initData() {
+            const stored = localStorage.getItem(CAL_KEY);
+            if (stored) {
+                events = JSON.parse(stored);
+            } else {
+                events = defaultData;
+                localStorage.setItem(CAL_KEY, JSON.stringify(events));
+            }
+            loadSubjects();
+            render();
+        }
+
+        // Poprawiony parser przedmiotów
+        function loadSubjects() {
+            const dbRaw = localStorage.getItem(DB_KEY);
+            const select = document.getElementById('subject-select');
+            let subjects = ["Matematyka", "J. Polski", "Biologia", "Chemia", "Historia"];
+
+            if (dbRaw) {
+                try {
+                    const parsed = JSON.parse(dbRaw);
+                    const rawList = Array.isArray(parsed) ? parsed : (parsed.subjects || []);
+                    if (rawList.length > 0) {
+                        subjects = rawList.map(s => (typeof s === 'object' && s !== null) ? (s.name || s.label || "Bez nazwy") : s);
+                    }
+                } catch (e) { console.error("DB Load Error", e); }
+            }
+
+            select.innerHTML = subjects.map(s => `<option value="${s}">${s}</option>`).join('');
+        }
+
+        function render() {
             const grid = document.getElementById('calendar-grid');
             const monthDisplay = document.getElementById('month-display');
             grid.innerHTML = '';
 
             const year = currentViewDate.getFullYear();
             const month = currentViewDate.getMonth();
+            monthDisplay.innerText = new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(currentViewDate).replace(/^\w/, c => c.toUpperCase());
 
-            // Nazwa miesiąca
-            const monthName = new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(currentViewDate);
-            monthDisplay.innerText = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-
-            // Obliczenia dat
-            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-            
-            // Korekta dla polskiego tygodnia (Poniedziałek jako 1, Niedziela jako 0)
-            let startingDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
+            const offset = firstDay === 0 ? 6 : firstDay - 1;
 
-            // Puste komórki przed początkiem miesiąca
-            for (let i = 0; i < startingDay; i++) {
-                grid.innerHTML += `<div class="h-32 rounded-2xl bg-slate-100/50"></div>`;
+            for (let i = 0; i < offset; i++) {
+                grid.innerHTML += `<div class="day-cell bg-slate-50/30 border-r border-b border-slate-100"></div>`;
             }
 
-            // Dni miesiąca
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const isToday = new Date().toISOString().split('T')[0] === dateStr;
-                const dayExams = exams.filter(e => e.date === dateStr);
+                const dayEvents = events.filter(e => e.date === dateStr);
 
                 grid.innerHTML += `
-                    <div class="h-32 bg-white rounded-2xl border ${isToday ? 'border-indigo-500 ring-1 ring-indigo-500' : 'border-slate-200'} p-2 flex flex-col group overflow-hidden">
-                        <span class="text-sm font-bold ${isToday ? 'text-indigo-600' : 'text-slate-400'}">${day}</span>
-                        <div class="mt-1 space-y-1 overflow-y-auto hide-scrollbar flex-grow">
-                            ${dayExams.map(exam => `
-                                <div onclick="deleteExam('${exam.id}')" class="text-[10px] bg-indigo-50 text-indigo-700 p-1 rounded border border-indigo-100 cursor-pointer hover:bg-red-50 hover:text-red-600 transition-colors truncate" title="Kliknij by usunąć: ${exam.topic}">
-                                    <b>${exam.subject}</b>
+                    <div class="day-cell bg-white border-r border-b border-slate-100 p-2 flex flex-col gap-1 transition-colors hover:bg-slate-50/50">
+                        <span class="text-[11px] font-extrabold ${isToday ? 'bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md' : 'text-slate-300'} ml-1 mb-1">${day}</span>
+                        <div class="space-y-1 overflow-y-auto hide-scrollbar flex-grow">
+                            ${dayEvents.map(e => `
+                                <div onclick="viewEvent('${e.id}')" class="cursor-pointer p-2 rounded-xl border-l-4 shadow-sm transition-all hover:scale-[1.03] ${
+                                    e.type === 'spr' ? 'bg-red-50 border-red-500 text-red-800' : 'bg-yellow-50 border-yellow-400 text-yellow-900'
+                                }">
+                                    <div class="font-black uppercase text-[7px] opacity-60 mb-0.5">${e.type === 'spr' ? 'Sprawdzian' : 'Kartkówka'}</div>
+                                    <div class="font-bold text-[10px] truncate leading-tight">${e.subject}</div>
+                                    <div class="text-[9px] opacity-80 truncate">${e.topicShort}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -115,38 +202,60 @@
             }
         }
 
-        function changeMonth(offset) {
-            currentViewDate.setMonth(currentViewDate.getMonth() + offset);
-            renderCalendar();
+        function exportToCode() {
+            const json = JSON.stringify(events, null, 2);
+            navigator.clipboard.writeText(json);
+            alert("🚀 JSON skopiowany! Wklej go do 'const defaultData' w kodzie.");
         }
 
-        function openModal() { document.getElementById('modal').classList.replace('hidden', 'flex'); }
-        function closeModal() { document.getElementById('modal').classList.replace('flex', 'hidden'); }
+        function viewEvent(id) {
+            const e = events.find(ev => ev.id === id);
+            if (!e) return;
+            const header = document.getElementById('view-header');
+            header.className = `p-8 text-white relative ${e.type === 'spr' ? 'bg-red-500' : 'bg-yellow-500'}`;
+            document.getElementById('view-type-label').innerText = e.type === 'spr' ? 'Sprawdzian' : 'Kartkówka';
+            document.getElementById('view-subject').innerText = e.subject;
+            document.getElementById('view-topic-short').innerText = e.topicShort;
+            document.getElementById('view-topic-full').innerText = e.topicFull || 'Brak opisu zakresu.';
+            document.getElementById('delete-btn').onclick = () => deleteEvent(id);
+            document.getElementById('modal-view').classList.replace('hidden', 'flex');
+        }
 
-        document.getElementById('exam-form').addEventListener('submit', (e) => {
+        function openAddModal() { document.getElementById('modal-add').classList.replace('hidden', 'flex'); }
+        function closeModals() { 
+            document.getElementById('modal-add').classList.replace('flex', 'hidden'); 
+            document.getElementById('modal-view').classList.replace('flex', 'hidden'); 
+        }
+
+        document.getElementById('event-form').onsubmit = (e) => {
             e.preventDefault();
-            const newExam = {
+            const newEv = {
                 id: Date.now().toString(),
-                subject: document.getElementById('subject').value,
+                type: document.getElementById('type').value,
                 date: document.getElementById('date').value,
-                topic: document.getElementById('topic').value
+                subject: document.getElementById('subject-select').value,
+                topicShort: document.getElementById('topic-short').value,
+                topicFull: document.getElementById('topic-full').value
             };
-            exams.push(newExam);
-            localStorage.setItem('exams', JSON.stringify(exams));
+            events.push(newEv);
+            localStorage.setItem(CAL_KEY, JSON.stringify(events));
             e.target.reset();
-            closeModal();
-            renderCalendar();
-        });
+            closeModals();
+            render();
+        };
 
-        function deleteExam(id) {
-            if(confirm('Usunąć ten wpis?')) {
-                exams = exams.filter(e => e.id !== id);
-                localStorage.setItem('exams', JSON.stringify(exams));
-                renderCalendar();
+        function deleteEvent(id) {
+            if(confirm('Usunąć?')) {
+                events = events.filter(e => e.id !== id);
+                localStorage.setItem(CAL_KEY, JSON.stringify(events));
+                closeModals();
+                render();
             }
         }
 
-        renderCalendar();
+        function changeMonth(s) { currentViewDate.setMonth(currentViewDate.getMonth() + s); render(); }
+
+        initData();
     </script>
 </body>
 </html>
