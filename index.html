@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Nauka.io v27 | Full Implementation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -42,15 +45,20 @@
         .dark .glass-nav { background: rgba(2, 6, 23, 0.8); }
 
         /* --- GRID SYSTEM --- */
-        .subject-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem; 
-        }
-        @media (min-width: 1024px) { 
-            .subject-grid { grid-template-columns: repeat(4, 1fr); } 
-            .col-span-3-custom { grid-column: span 3 / span 3; }
-        }
+.subject-grid { 
+    display: grid; 
+    grid-template-columns: repeat(1, 1fr); /* Jeden kafelek na całą szerokość na małym tel */
+    gap: 1rem; 
+}
+
+@media (min-width: 640px) { 
+    .subject-grid { grid-column-gap: 1.5rem; grid-template-columns: repeat(2, 1fr); } 
+}
+
+@media (min-width: 1024px) { 
+    .subject-grid { grid-template-columns: repeat(4, 1fr); } 
+    .col-span-3-custom { grid-column: span 3 / span 3; }
+}
 
         /* --- KAFELKI --- */
         .subject-card { 
@@ -184,7 +192,7 @@
         </div>
     </nav>
 
-    <main id="app" class="max-w-7xl mx-auto p-8 md:p-12"></main>
+    <main id="app" class="max-w-7xl mx-auto p-4 md:p-12"></main>
 
     <div id="export-modal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-8">
         <div class="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-[4rem] p-12 shadow-2xl">
