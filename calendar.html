@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nauka.io | Terminarz v2.7</title>
+    <title>Nauka.io | Terminarz Pro v2.7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -18,7 +18,7 @@
     <div class="max-w-[1600px] mx-auto px-6 py-6">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-6 gap-4">
             <div class="flex items-center gap-6">
-                <h1 id="month-display" class="text-3xl font-extrabold tracking-tighter text-slate-900 min-w-[250px]">Marzec 2026</h1>
+                <h1 id="month-display" class="text-3xl font-extrabold tracking-tighter text-slate-900 min-w-[250px]">Kwiecień 2026</h1>
                 <div class="flex bg-white rounded-xl shadow-sm border border-slate-200 p-1">
                     <button onclick="changeMonth(-1)" class="p-2 hover:bg-slate-50 rounded-lg transition-all text-slate-600">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
@@ -42,14 +42,8 @@
         </div>
 
         <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-200 overflow-hidden">
-            <div class="grid calendar-grid bg-slate-50 border-b border-slate-200">
-                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Poniedziałek</div>
-                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Wtorek</div>
-                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Środa</div>
-                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Czwartek</div>
-                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest">Piątek</div>
-                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest text-indigo-300">Sobota</div>
-                <div class="p-4 text-center text-[10px] font-black uppercase text-slate-400 tracking-widest text-indigo-300">Niedziela</div>
+            <div class="grid calendar-grid bg-slate-50 border-b border-slate-200 text-center font-black uppercase text-[10px] text-slate-400 tracking-widest p-4">
+                <div>Poniedziałek</div><div>Wtorek</div><div>Środa</div><div>Czwartek</div><div>Piątek</div><div class="text-indigo-300">Sobota</div><div class="text-indigo-300">Niedziela</div>
             </div>
             <div id="calendar-grid" class="grid calendar-grid"></div>
         </div>
@@ -59,36 +53,35 @@
         <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden border border-white/20">
             <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                 <h3 class="text-2xl font-extrabold text-slate-800">Nowy termin</h3>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-slate-900 text-3xl transition-colors">&times;</button>
+                <button onclick="closeModals()" class="text-slate-400 hover:text-slate-900 text-3xl">&times;</button>
             </div>
             <form id="event-form" class="p-8 space-y-5">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Typ wydarzenia</label>
-                        <select id="type" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all cursor-pointer">
+                        <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Typ</label>
+                        <select id="type" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none cursor-pointer">
                             <option value="spr">🔴 Sprawdzian</option>
                             <option value="kart">🟡 Kartkówka</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Data</label>
-                        <input type="date" id="date" required class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all">
+                        <input type="date" id="date" required class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Przedmiot (z Twojej bazy)</label>
-                    <select id="subject-select" required class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all">
-                        </select>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Przedmiot</label>
+                    <select id="subject-select" required class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none"></select>
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Krótki temat (na kalendarzu)</label>
-                    <input type="text" id="topic-short" required placeholder="np. Budowa DNA" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none transition-all">
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Temat</label>
+                    <input type="text" id="topic-short" required class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-bold focus:border-indigo-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Pełny zakres materiału</label>
-                    <textarea id="topic-full" rows="3" placeholder="Wypisz co trzeba umieć..." class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm font-medium focus:border-indigo-500 outline-none transition-all"></textarea>
+                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2 ml-1">Zakres materiału</label>
+                    <textarea id="topic-full" rows="3" class="w-full bg-slate-50 border-2 border-slate-100 p-3 rounded-2xl text-sm focus:border-indigo-500 outline-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-0.5 transition-all">Dodaj do terminarza</button>
+                <button type="submit" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition-all">Dodaj</button>
             </form>
         </div>
     </div>
@@ -107,11 +100,11 @@
                 </div>
                 <div>
                     <label class="block text-[10px] font-black uppercase text-slate-400 mb-1">Zakres materiału</label>
-                    <div id="view-topic-full" class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto pr-2"></div>
+                    <div id="view-topic-full" class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap max-h-40 overflow-y-auto pr-2 text-justify"></div>
                 </div>
                 <div class="pt-2 flex gap-3">
-                    <button id="delete-btn" class="flex-1 bg-red-50 text-red-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-red-100 transition-all">Usuń wpis</button>
-                    <button onclick="closeModals()" class="flex-[2] bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition-all">Zamknij</button>
+                    <button id="delete-btn" class="flex-1 bg-red-50 text-red-600 py-3 rounded-xl font-bold text-xs uppercase hover:bg-red-100 transition-all">Usuń</button>
+                    <button onclick="closeModals()" class="flex-[2] bg-slate-100 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase hover:bg-slate-200 transition-all">Zamknij</button>
                 </div>
             </div>
         </div>
@@ -119,9 +112,26 @@
 
     <script>
         // ==========================================
-        // 1. HARDKODOWANE DANE (TUTAJ WKLEJAJ WYGENEROWANY JSON)
+        // WKLEJ SWÓJ JSON MIĘDZY NAWIASY []
         // ==========================================
-        const defaultData = []; 
+        const defaultData = [
+          {
+            "id": "1775478407363",
+            "type": "spr",
+            "date": "2026-04-13",
+            "subject": "Biologia",
+            "topicShort": "Komórki",
+            "topicFull": ""
+          },
+          {
+            "id": "1775478422268",
+            "type": "spr",
+            "date": "2026-04-14",
+            "subject": "J. Polski",
+            "topicShort": "Biblia",
+            "topicFull": ""
+          }
+        ]; 
 
         const CAL_KEY = 'nauka_v27_calendar';
         const DB_KEY = 'nauka_v27_db';
@@ -129,36 +139,41 @@
         let currentViewDate = new Date();
         let events = [];
 
-        // Inicjalizacja danych
         function initData() {
-            const stored = localStorage.getItem(CAL_KEY);
-            if (stored) {
-                events = JSON.parse(stored);
-            } else {
-                events = defaultData;
-                localStorage.setItem(CAL_KEY, JSON.stringify(events));
-            }
+            // Logika: Zawsze łączymy defaultData z tym co w localStorage
+            const stored = JSON.parse(localStorage.getItem(CAL_KEY)) || [];
+            const allEvents = [...defaultData, ...stored];
+            // Usuwamy duplikaty po ID
+            events = allEvents.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i);
+            
             loadSubjects();
             render();
         }
 
-        // Poprawiony parser przedmiotów
         function loadSubjects() {
-            const dbRaw = localStorage.getItem(DB_KEY);
             const select = document.getElementById('subject-select');
-            let subjects = ["Matematyka", "J. Polski", "Biologia", "Chemia", "Historia"];
+            
+            // Twoja lista przedmiotów jako podstawa
+            let mySubjects = [
+                "Matematyka", "J. Polski", "J. Angielski", "J. Niemiecki", 
+                "Biologia", "BiZ", "LSK / BHP", "UTK / Informatyka", 
+                "Fizyka", "Chemia", "Geografia"
+            ];
 
-            if (dbRaw) {
-                try {
+            // Próba pobrania dodatkowych przedmiotów z bazy głównej
+            try {
+                const dbRaw = localStorage.getItem(DB_KEY);
+                if (dbRaw) {
                     const parsed = JSON.parse(dbRaw);
                     const rawList = Array.isArray(parsed) ? parsed : (parsed.subjects || []);
-                    if (rawList.length > 0) {
-                        subjects = rawList.map(s => (typeof s === 'object' && s !== null) ? (s.name || s.label || "Bez nazwy") : s);
-                    }
-                } catch (e) { console.error("DB Load Error", e); }
-            }
+                    rawList.forEach(s => {
+                        const name = (typeof s === 'object' && s !== null) ? (s.name || s.label) : s;
+                        if (name && !mySubjects.includes(name)) mySubjects.push(name);
+                    });
+                }
+            } catch (e) { console.error("DB Sync Error", e); }
 
-            select.innerHTML = subjects.map(s => `<option value="${s}">${s}</option>`).join('');
+            select.innerHTML = mySubjects.map(s => `<option value="${s}">${s}</option>`).join('');
         }
 
         function render() {
@@ -174,9 +189,7 @@
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const offset = firstDay === 0 ? 6 : firstDay - 1;
 
-            for (let i = 0; i < offset; i++) {
-                grid.innerHTML += `<div class="day-cell bg-slate-50/30 border-r border-b border-slate-100"></div>`;
-            }
+            for (let i = 0; i < offset; i++) grid.innerHTML += `<div class="day-cell bg-slate-50/30 border-r border-b border-slate-100"></div>`;
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -191,7 +204,7 @@
                                 <div onclick="viewEvent('${e.id}')" class="cursor-pointer p-2 rounded-xl border-l-4 shadow-sm transition-all hover:scale-[1.03] ${
                                     e.type === 'spr' ? 'bg-red-50 border-red-500 text-red-800' : 'bg-yellow-50 border-yellow-400 text-yellow-900'
                                 }">
-                                    <div class="font-black uppercase text-[7px] opacity-60 mb-0.5">${e.type === 'spr' ? 'Sprawdzian' : 'Kartkówka'}</div>
+                                    <div class="font-black uppercase text-[7px] opacity-60 mb-0.5">${e.type === 'spr' ? 'SPR' : 'KART'}</div>
                                     <div class="font-bold text-[10px] truncate leading-tight">${e.subject}</div>
                                     <div class="text-[9px] opacity-80 truncate">${e.topicShort}</div>
                                 </div>
@@ -205,7 +218,7 @@
         function exportToCode() {
             const json = JSON.stringify(events, null, 2);
             navigator.clipboard.writeText(json);
-            alert("🚀 JSON skopiowany! Wklej go do 'const defaultData' w kodzie.");
+            alert("🚀 JSON skopiowany!");
         }
 
         function viewEvent(id) {
@@ -216,7 +229,7 @@
             document.getElementById('view-type-label').innerText = e.type === 'spr' ? 'Sprawdzian' : 'Kartkówka';
             document.getElementById('view-subject').innerText = e.subject;
             document.getElementById('view-topic-short').innerText = e.topicShort;
-            document.getElementById('view-topic-full').innerText = e.topicFull || 'Brak opisu zakresu.';
+            document.getElementById('view-topic-full').innerText = e.topicFull || 'Brak opisu zakresu materiału.';
             document.getElementById('delete-btn').onclick = () => deleteEvent(id);
             document.getElementById('modal-view').classList.replace('hidden', 'flex');
         }
@@ -238,7 +251,7 @@
                 topicFull: document.getElementById('topic-full').value
             };
             events.push(newEv);
-            localStorage.setItem(CAL_KEY, JSON.stringify(events));
+            localStorage.setItem(CAL_KEY, JSON.stringify(events.filter(ev => !defaultData.some(d => d.id === ev.id))));
             e.target.reset();
             closeModals();
             render();
@@ -247,7 +260,7 @@
         function deleteEvent(id) {
             if(confirm('Usunąć?')) {
                 events = events.filter(e => e.id !== id);
-                localStorage.setItem(CAL_KEY, JSON.stringify(events));
+                localStorage.setItem(CAL_KEY, JSON.stringify(events.filter(ev => !defaultData.some(d => d.id === ev.id))));
                 closeModals();
                 render();
             }
