@@ -537,33 +537,35 @@
                 points: 0, 
                 locked: false 
             };
-            renderQuestion();
-        }
+            function renderQuestion() {
+    const q = qState.questions[qState.current];
+    qState.locked = false;
+    app.innerHTML = `
+        <div class="max-w-2xl mx-auto py-6 md:py-12 page-enter text-center px-4">
+            <p class="font-black text-indigo-500 uppercase text-[10px] mb-6 tracking-[0.4em]">Pytanie ${qState.current + 1} z ${qState.questions.length}</p>
+            
+            <h2 class="text-2xl md:text-5xl font-black mb-10 md:mb-16 tracking-tighter leading-tight">${q.question}</h2>
+            
+            <div id="quiz-options" class="grid gap-4 md:gap-6">
+                ${q.type === 'abcd' ? q.options.sort(() => Math.random() - 0.5).map(o => `
+                    <button onclick="checkABCD(this, '${o.replace(/'/g, "\\'")}', '${q.correct.replace(/'/g, "\\'")}')" 
+                            class="p-5 md:p-8 bg-white dark:bg-slate-900 rounded-2xl md:rounded-[2.5rem] text-lg md:text-2xl font-bold text-left flex items-center gap-4 shadow-sm transition border-2 md:border-4 border-transparent hover:border-indigo-500 active:scale-95">
+                        <div class="w-6 h-6 md:w-8 md:h-8 rounded-full border-2 md:border-4 border-indigo-500 flex-shrink-0"></div>
+                        ${o}
+                    </button>
+                `).join('') : `
+                    <input type="text" id="writeIn" placeholder="Twoja odpowiedź..." class="w-full p-6 bg-white dark:bg-slate-900 rounded-2xl text-xl md:text-4xl font-black text-center outline-none border-4 border-transparent focus:border-indigo-500 shadow-xl mb-6">
+                    <button onclick="checkWrite('${q.correct.replace(/'/g, "\\'")}')" class="w-full btn-primary py-5 rounded-2xl text-lg shadow-xl">Zatwierdź</button>
+                `}
+            </div>
 
-        function renderQuestion() {
-            const q = qState.questions[qState.current];
-            qState.locked = false;
-            app.innerHTML = `
-                <div class="max-w-4xl mx-auto py-12 page-enter text-center">
-                    <p class="font-black text-indigo-500 uppercase text-xs mb-12 tracking-[0.6em]">Pytanie ${qState.current + 1} z ${qState.questions.length}</p>
-                    <h2 class="text-6xl font-black mb-24 tracking-tighter leading-tight">${q.question}</h2>
-                    
-                    <div id="quiz-options" class="grid gap-6">
-                        ${q.type === 'abcd' ? q.options.sort(() => Math.random() - 0.5).map(o => `
-                            <button onclick="checkABCD(this, '${o.replace(/'/g, "\\'")}', '${q.correct.replace(/'/g, "\\'")}')" 
-                                    class="p-10 bg-white dark:bg-slate-900 rounded-[2.5rem] text-3xl font-bold text-left flex items-center gap-10 shadow-sm transition border-4 border-transparent hover:border-indigo-500">
-                                <div class="w-10 h-10 rounded-full border-4 border-indigo-500 flex-shrink-0"></div>
-                                ${o}
-                            </button>
-                        `).join('') : `
-                            <input type="text" id="writeIn" placeholder="Wpisz odpowiedź..." class="w-full p-12 bg-white dark:bg-slate-900 rounded-[3rem] text-5xl font-black text-center outline-none border-[12px] border-transparent focus:border-indigo-500 shadow-2xl mb-12">
-                            <button onclick="checkWrite('${q.correct.replace(/'/g, "\\'")}')" class="w-full btn-primary py-12 rounded-[3rem] text-2xl shadow-2xl">Zatwierdź</button>
-                        `}
-                    </div>
-                    <div id="feedback" class="mt-16 hidden p-14 rounded-[3.5rem] font-black text-4xl shadow-inner animate-bounce"></div>
-                    <button id="nextQ" onclick="nextQ()" class="w-full mt-12 bg-indigo-600 text-white p-14 rounded-[3.5rem] font-black uppercase text-2xl hidden shadow-2xl">Następne zadanie →</button>
-                </div>`;
-        }
+            <div id="feedback" class="mt-8 hidden p-8 rounded-3xl font-black text-xl md:text-3xl shadow-inner animate-bounce"></div>
+            
+            <button id="nextQ" onclick="nextQ()" class="w-full mt-8 bg-indigo-600 text-white p-6 rounded-2xl font-black uppercase text-lg hidden shadow-2xl active:scale-95">
+                Następne pytanie →
+            </button>
+        </div>`;
+}
 
         function checkABCD(btn, val, corr) {
             if(qState.locked) return; qState.locked = true;
