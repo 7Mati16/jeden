@@ -402,14 +402,14 @@
                         <button onclick="runFiszki(${item.id})" class="w-full bg-indigo-600 text-white py-10 md:py-16 rounded-[2rem] md:rounded-[3.5rem] font-black text-2xl md:text-5xl shadow-2xl uppercase mb-12 md:mb-24 hover:scale-[1.02] active:scale-95 transition">Trenuj Fiszki 🎴</button>
                     ` : ''}
                     
-                    <div class="text-lg md:text-3xl leading-relaxed opacity-90 whitespace-pre-line text-slate-800 dark:text-slate-100 break-words">
+                    <div class="text-base md:text-3xl leading-relaxed opacity-90 whitespace-pre-line text-slate-800 dark:text-slate-100 break-words">
                         ${parseContent(item.content)}
                     </div>
                     
                     ${item.summary ? `
                         <div class="mt-12 md:mt-20 p-8 md:p-16 bg-amber-50 dark:bg-amber-900/10 border-l-[8px] md:border-l-[16px] border-amber-400 rounded-[2rem] md:rounded-[3rem]">
                             <span class="text-[10px] font-black uppercase tracking-widest text-amber-600 mb-4 block">Podsumowanie</span>
-                            <p class="text-xl md:text-4xl font-bold italic text-amber-950 dark:text-amber-200">"${item.summary}"</p>
+                            <p class="text-lg md:text-2xl font-bold italic text-amber-950 dark:text-amber-200">"${item.summary}"</p>
                         </div>
                     ` : ''}
 
