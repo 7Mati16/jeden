@@ -238,6 +238,7 @@
     </div>
 
     <script>
+window.onerror = function(msg, url, line) { alert("BŁĄD: " + msg + " w linii: " + line); };
         const config = {
             subjects: {
                 "Polski": { kolor: "from-rose-400 to-red-600", ikona: "📖" },
