@@ -293,10 +293,8 @@
             .replace(/\[p\](.*?)\[\/p\]/gs, '<span class="format-pomin">$1</span>')
             .replace(/\*\*(.*?)\*\*/g, '<strong class="text-indigo-600 dark:text-indigo-400 font-extrabold">$1</strong>')
             .replace(/^\|(.*?)\|$/gm, (match, content) => {
-    // text-sm sprawi, że tekst w komórkach będzie mniejszy
-    const cells = content.split('|').map(c => `<td class="border dark:border-slate-700 p-3 font-medium text-sm md:text-base">${c.trim()}</td>`).join('');
-    return `<div class="overflow-x-auto my-8"><table class="w-full border-collapse bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm"><tr>${cells}</tr></table></div>`;
-})
+                const cells = content.split('|').map(c => `<td class="border dark:border-slate-700 p-4 font-medium">${c.trim()}</td>`).join('');
+                return `<div class="overflow-x-auto my-8"><table class="w-full border-collapse bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm text-lg"><tr>${cells}</tr></table></div>`;
             }).replace(/<\/table><\/div>\s*<div class="overflow-x-auto my-8"><table class="w-full border-collapse bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm text-lg">/g, '');
 }
 
