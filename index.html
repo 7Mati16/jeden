@@ -551,7 +551,7 @@ window.onerror = function(msg, url, line) { alert("BŁĄD: " + msg + " w linii: 
             const safeC = q.correct.replace(/'/g, "\\'");
             optionsHTML += `
                 <button onclick="checkABCD(this, '${safeO}', '${safeC}')" 
-                        class="p-4 bg-white dark:bg-slate-900 rounded-xl text-base font-bold text-left flex items-center gap-3 shadow-sm border-2 border-transparent active:scale-95">
+                        class="p-4 md:p-6 bg-white dark:bg-slate-900 rounded-2xl text-sm md:text-xl font-bold text-left flex items-center gap-3 shadow-sm border-2 border-transparent active:scale-95 transition-all">
                     <div class="w-5 h-5 rounded-full border-2 border-indigo-500 flex-shrink-0"></div>
                     ${o}
                 </button>`;
@@ -559,57 +559,62 @@ window.onerror = function(msg, url, line) { alert("BŁĄD: " + msg + " w linii: 
     } else {
         const safeC = q.correct.replace(/'/g, "\\'");
         optionsHTML = `
-            <input type="text" id="writeIn" placeholder="Wpisz..." class="w-full p-4 bg-white dark:bg-slate-900 rounded-xl text-lg font-black text-center outline-none border-2 border-transparent focus:border-indigo-500 mb-4">
-            <button onclick="checkWrite('${safeC}')" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-black">Zatwierdź</button>`;
+            <input type="text" id="writeIn" placeholder="Wpisz odpowiedź..." class="w-full p-4 md:p-8 bg-white dark:bg-slate-900 rounded-2xl text-lg md:text-3xl font-black text-center outline-none border-2 border-transparent focus:border-indigo-500 mb-4">
+            <button onclick="checkWrite('${safeC}')" class="w-full bg-indigo-600 text-white py-4 md:py-6 rounded-2xl font-black text-base md:text-xl shadow-lg">Zatwierdź</button>`;
     }
 
     app.innerHTML = `
-        <div class="max-w-2xl mx-auto py-6 text-center px-4">
-            <p class="text-indigo-500 text-[10px] mb-4 uppercase font-black">Pytanie ${qState.current + 1} / ${qState.questions.length}</p>
-            <h2 class="text-xl md:text-3xl font-black mb-8 leading-tight">${q.question}</h2>
-            <div id="quiz-options" class="grid gap-3">${optionsHTML}</div>
-            <div id="feedback" class="mt-6 hidden p-6 rounded-2xl font-black text-lg"></div>
-            <button id="nextQ" onclick="nextQ()" class="w-full mt-6 bg-indigo-600 text-white p-5 rounded-xl font-black hidden">Następne pytanie →</button>
+        <div class="max-w-2xl mx-auto py-6 md:py-12 text-center px-4 page-enter">
+            <p class="text-indigo-500 text-[10px] mb-4 uppercase font-black tracking-widest">Pytanie ${qState.current + 1} / ${qState.questions.length}</p>
+            <h2 class="text-xl md:text-4xl font-black mb-8 leading-tight tracking-tighter">${q.question}</h2>
+            <div id="quiz-options" class="grid gap-3 md:gap-4">${optionsHTML}</div>
+            <div id="feedback" class="mt-6 hidden p-6 md:p-10 rounded-3xl font-black"></div>
+            <button id="nextQ" onclick="nextQ()" class="w-full mt-6 bg-indigo-600 text-white p-5 rounded-2xl font-black hidden shadow-xl active:scale-95">Następne pytanie →</button>
         </div>`;
 }
 
-        function checkABCD(btn, val, corr) {
-            if(qState.locked) return; qState.locked = true;
-            const isCorrect = val === corr;
-            if(isCorrect) qState.points++;
-            btn.classList.add(isCorrect ? '!bg-green-500' : '!bg-red-500', '!text-white', '!border-transparent');
-            document.getElementById('nextQ').classList.remove('hidden');
-        }
+function checkABCD(btn, val, corr) {
+    if(qState.locked) return; 
+    qState.locked = true;
+    const isCorrect = val === corr;
+    if(isCorrect) qState.points++;
+    btn.classList.add(isCorrect ? '!bg-green-500' : '!bg-red-500', '!text-white', '!border-transparent');
+    document.getElementById('nextQ').classList.remove('hidden');
+}
 
-        function checkWrite(corr) {
-            const input = document.getElementById('writeIn');
-            const val = input.value.trim().toLowerCase();
-            if(!val || qState.locked) return; qState.locked = true;
-            const isCorrect = val === corr.toLowerCase();
-            if(isCorrect) qState.points++;
-            input.classList.add(isCorrect ? '!border-green-500' : '!border-red-500');
-            const f = document.getElementById('feedback');
-            f.classList.remove('hidden');
-            f.className = `mt-16 p-14 rounded-[3.5rem] font-black text-3xl ${isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
-            f.innerHTML = isCorrect ? "Brawo! Prawidłowo." : `Błąd! Poprawna odpowiedź: <br><span class="text-6xl mt-4 block">${corr}</span>`;
-            document.getElementById('nextQ').classList.remove('hidden');
-        }
+function checkWrite(corr) {
+    const input = document.getElementById('writeIn');
+    const val = input.value.trim().toLowerCase();
+    if(!val || qState.locked) return; 
+    qState.locked = true;
+    const isCorrect = val === corr.toLowerCase();
+    if(isCorrect) qState.points++;
+    
+    input.classList.add(isCorrect ? '!border-green-500' : '!border-red-500');
+    const f = document.getElementById('feedback');
+    f.classList.remove('hidden');
+    // Responsywne paddingi i tekst dla feedbacku
+    f.className = `mt-8 p-6 md:p-12 rounded-3xl font-black text-lg md:text-3xl ${isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+    f.innerHTML = isCorrect ? "Brawo! Prawidłowo. 🌟" : `Błąd! Poprawna odpowiedź: <br><span class="text-xl md:text-4xl mt-2 block text-indigo-600">${corr}</span>`;
+    document.getElementById('nextQ').classList.remove('hidden');
+}
 
-        function nextQ() {
-            qState.current++;
-            if(qState.current < qState.questions.length) renderQuestion();
-            else {
-                app.innerHTML = `
-                    <div class="page-enter py-20 text-center">
-                        <div class="max-w-3xl mx-auto p-20 bg-white dark:bg-slate-900 rounded-[5rem] border-[15px] border-indigo-600 shadow-2xl">
-                            <div class="text-[12rem] leading-none mb-10">🏆</div>
-                            <h2 class="text-5xl font-black mb-6 uppercase tracking-tighter">Wynik Końcowy</h2>
-                            <div class="text-[13rem] font-black text-indigo-600 leading-none mb-16">${qState.points}/${qState.questions.length}</div>
-                            <button onclick="renderNote(${qState.id})" class="w-full btn-primary py-12 rounded-[3rem] text-3xl shadow-2xl">Wróć do lekcji</button>
-                        </div>
-                    </div>`;
-            }
-        }
+function nextQ() {
+    qState.current++;
+    if(qState.current < qState.questions.length) {
+        renderQuestion();
+    } else {
+        app.innerHTML = `
+            <div class="page-enter py-10 md:py-20 text-center px-4">
+                <div class="max-w-2xl mx-auto p-8 md:p-20 bg-white dark:bg-slate-900 rounded-[3rem] md:rounded-[5rem] border-4 md:border-[15px] border-indigo-600 shadow-2xl">
+                    <div class="text-6xl md:text-[10rem] leading-none mb-6 md:mb-10">🏆</div>
+                    <h2 class="text-2xl md:text-5xl font-black mb-4 uppercase tracking-tighter">Wynik Końcowy</h2>
+                    <div class="text-6xl md:text-[11rem] font-black text-indigo-600 leading-none mb-10 md:mb-16">${qState.points}/${qState.questions.length}</div>
+                    <button onclick="renderNote(${qState.id})" class="w-full bg-indigo-600 text-white py-6 md:py-10 rounded-2xl md:rounded-[3rem] text-xl md:text-3xl font-black shadow-xl hover:scale-[1.02] active:scale-95 transition-transform">Wróć do lekcji</button>
+                </div>
+            </div>`;
+    }
+}
 
         // --- FORM: CREATE & EDIT ---
         function renderForm(preSub = null, editId = null) {
