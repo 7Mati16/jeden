@@ -541,36 +541,34 @@
     const q = qState.questions[qState.current];
     if (!q) return;
     qState.locked = false;
-    
-    // Czyścimy widok i budujemy od nowa
-    app.innerHTML = `
-        <div class="max-w-2xl mx-auto py-6 md:py-12 page-enter text-center px-4">
-            <p class="font-black text-indigo-500 uppercase text-[10px] mb-4 tracking-[0.4em]">Pytanie ${qState.current + 1} z ${qState.questions.length}</p>
-            
-            <h2 class="text-xl md:text-4xl font-black mb-8 tracking-tighter leading-tight">${q.question}</h2>
-            
-            <div id="quiz-options" class="grid gap-3 md:gap-4">
-                ${q.type === 'abcd' ? q.options.map(o => {
-                    const safeOption = o.replace(/'/g, "\\'");
-                    const safeCorrect = q.correct.replace(/'/g, "\\'");
-                    return `
-                        <button onclick="checkABCD(this, '${safeOption}', '${safeCorrect}')" 
-                                class="p-4 md:p-6 bg-white dark:bg-slate-900 rounded-xl md:rounded-3xl text-base md:text-xl font-bold text-left flex items-center gap-3 shadow-sm transition border-2 border-transparent hover:border-indigo-500 active:scale-95">
-                            <div class="w-5 h-5 rounded-full border-2 border-indigo-500 flex-shrink-0"></div>
-                            ${o}
-                        </button>
-                    `;
-                }).join('') : `
-                    <input type="text" id="writeIn" placeholder="Wpisz odpowiedź..." class="w-full p-5 bg-white dark:bg-slate-900 rounded-xl text-lg md:text-2xl font-black text-center outline-none border-2 border-transparent focus:border-indigo-500 shadow-lg mb-4">
-                    <button onclick="checkWrite('${q.correct.replace(/'/g, "\\'")}')" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-black text-lg shadow-lg">Zatwierdź</button>
-                `}
-            </div>
 
-            <div id="feedback" class="mt-6 hidden p-6 rounded-2xl font-black text-lg md:text-2xl shadow-inner animate-pulse"></div>
-            
-            <button id="nextQ" onclick="nextQ()" class="w-full mt-6 bg-indigo-600 text-white p-5 rounded-xl font-black uppercase text-base hidden shadow-xl">
-                Następne pytanie →
-            </button>
+    let optionsHTML = '';
+    
+    if (q.type === 'abcd') {
+        q.options.forEach(o => {
+            const safeO = o.replace(/'/g, "\\'");
+            const safeC = q.correct.replace(/'/g, "\\'");
+            optionsHTML += `
+                <button onclick="checkABCD(this, '${safeO}', '${safeC}')" 
+                        class="p-4 bg-white dark:bg-slate-900 rounded-xl text-base font-bold text-left flex items-center gap-3 shadow-sm border-2 border-transparent active:scale-95">
+                    <div class="w-5 h-5 rounded-full border-2 border-indigo-500 flex-shrink-0"></div>
+                    ${o}
+                </button>`;
+        });
+    } else {
+        const safeC = q.correct.replace(/'/g, "\\'");
+        optionsHTML = `
+            <input type="text" id="writeIn" placeholder="Wpisz..." class="w-full p-4 bg-white dark:bg-slate-900 rounded-xl text-lg font-black text-center outline-none border-2 border-transparent focus:border-indigo-500 mb-4">
+            <button onclick="checkWrite('${safeC}')" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-black">Zatwierdź</button>`;
+    }
+
+    app.innerHTML = `
+        <div class="max-w-2xl mx-auto py-6 text-center px-4">
+            <p class="text-indigo-500 text-[10px] mb-4 uppercase font-black">Pytanie ${qState.current + 1} / ${qState.questions.length}</p>
+            <h2 class="text-xl md:text-3xl font-black mb-8 leading-tight">${q.question}</h2>
+            <div id="quiz-options" class="grid gap-3">${optionsHTML}</div>
+            <div id="feedback" class="mt-6 hidden p-6 rounded-2xl font-black text-lg"></div>
+            <button id="nextQ" onclick="nextQ()" class="w-full mt-6 bg-indigo-600 text-white p-5 rounded-xl font-black hidden">Następne pytanie →</button>
         </div>`;
 }
 
